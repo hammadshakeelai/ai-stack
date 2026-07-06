@@ -1,0 +1,31 @@
+{
+  // Point OpenClaw at the local LiteLLM gateway, which itself fans out
+  // Groq -> Gemini -> OpenRouter. One endpoint, shared fallback chain.
+  // Merge this into ~/.openclaw/openclaw.json and replace the apiKey with
+  // YOUR LITELLM_MASTER_KEY from gateway/.env.
+  models: {
+    providers: {
+      gateway: {
+        baseUrl: "http://localhost:4000/v1",
+        apiKey: "sk-local-CHANGE-ME",
+        api: "openai-completions",
+        models: [
+          {
+            id: "auto",
+            name: "Gateway (Groq->Gemini->OpenRouter)",
+            contextWindow: 128000,
+            maxTokens: 8192,
+          },
+        ],
+      },
+    },
+  },
+  agents: {
+    defaults: {
+      model: {
+        primary: "gateway/auto",
+        fallbacks: [],
+      },
+    },
+  },
+}

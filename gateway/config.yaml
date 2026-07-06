@@ -1,0 +1,40 @@
+# LiteLLM gateway — one OpenAI-compatible endpoint with 3-provider fallback.
+# Apps call model "auto". Chain (most reliable first):
+#     Groq  ->  Gemini  ->  OpenRouter
+# Endpoint: http://localhost:4000/v1
+#
+# Why this order: Groq's free tier is fast + generous; Gemini 2.5-flash free
+# works well; OpenRouter :free models are capped (~50 req/day, tight rate
+# limits) so they sit last as a backstop.
+#
+# NOTE: free model slugs change over time. If a model 404s, update the
+# `model:` lines (groq.com/docs, ai.google.dev, openrouter.ai/models?q=free).
+
+model_list:
+  # ── Primary: Groq (fast, reliable free tier) ────────────────────
+  - model_name: auto
+    litellm_params:
+      model: groq/llama-3.3-70b-versatile
+      api_key: os.environ/GROQ_API_KEY
+
+  # ── Fallback 1: Google Gemini (free tier) ───────────────────────
+  - model_name: gemini
+    litellm_params:
+      model: gemini/gemini-2.5-flash
+      api_key: os.environ/GEMINI_API_KEY
+
+  # ── Fallback 2: OpenRouter free model (rate-limited backstop) ────
+  - model_name: openrouter
+    litellm_params:
+      model: openrouter/meta-llama/llama-3.3-70b-instruct:free
+      api_key: os.environ/OPENROUTER_API_KEY
+
+litellm_settings:
+  # Ordered fallback chain when "auto" (Groq) fails.
+  fallbacks: [{"auto": ["gemini", "openrouter"]}]
+  drop_params: true
+  num_retries: 2
+  request_timeout: 120
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
