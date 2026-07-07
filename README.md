@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.png" alt="ai-stack — your own AI, on your own machine. $0/month, private, self-healing. Groq → Gemini → OpenRouter + local models." width="100%">
+</p>
+
 # AI Stack — a private, self-healing AI assistant that costs $0/month
 
 A self-hosted setup that gives you a ChatGPT-style web UI **and** a terminal AI agent
@@ -130,6 +134,7 @@ uses the same gateway and the same fallback chain. The wrappers in `bin\` make a
 - `start-stack.ps1` / `stop-stack.ps1` / `start-odysseus.ps1` — start/stop the stack
 - `bin/` — `ody` launcher + `openclaw` TUI wrapper
 - `extras/` — Odysseus endpoint seeder, OpenClaw config patch
+- `assets/` — README banner
 - `gen_icon.py` / `odysseus.ico` — desktop icon
 
 ## License
