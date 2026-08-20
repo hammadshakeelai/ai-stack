@@ -1,3 +1,4 @@
+# deprecated use omni route instead for now
 <p align="center">
   <img src="assets/banner.png" alt="ai-stack — your own AI, on your own machine. $0/month, private, self-healing. Groq → Gemini → OpenRouter + local models." width="100%">
 </p>
